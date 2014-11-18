@@ -17,7 +17,11 @@ import javax.swing.JTextArea;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-
+/**
+ * The View class builds the GUI, handles the user selection, and performs live data search based on user selection
+ * @author Hayner
+ *
+ */
 public class View extends JFrame{
 	private final int FRAMEWIDTH= 600;
 	private final int FRAMEHEIGHT= 600;
@@ -52,21 +56,24 @@ public class View extends JFrame{
 	private JPanel display = new JPanel(null);
 	private JLabel locationDisplay = new JLabel();
 	private JLabel capitalDisplay = new JLabel();
-	private JButton testButton = new JButton("Display");
+	private JButton displayButton = new JButton("Display");
 	private ImageIcon[] flags = new ImageIcon[51];
 	private JLabel flagPic = new JLabel();
 	private JTextArea liveData = new JTextArea();
 	private JScrollPane outputLiveData = new JScrollPane(liveData);
 
+	/**
+	 * View() represents the constructor for the view class
+	 */
 	public View(){
 		super.setLayout(null);
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		super.setTitle("Live Data");
 
-		testButton.addActionListener(new displayListener());
+		displayButton.addActionListener(new displayListener());
 		statesDropDown.setEditable(false);
 		control.add(statesDropDown);
-		control.add(testButton);
+		control.add(displayButton);
 
 		setLocations();
 
@@ -89,6 +96,9 @@ public class View extends JFrame{
 		}
 	}
 
+	/**
+	 * setLocations method sets the locations and sizes of items on the GUI
+	 */
 	private void setLocations(){
 		control.setLocation(0,0);
 		control.setSize(FRAMEWIDTH, 50);
@@ -107,6 +117,11 @@ public class View extends JFrame{
 		liveData.setEditable(false);
 	}
 
+	/**
+	 * the buildPanel method populates information on the screen based on user selection when display button is pressed
+	 * @param num
+	 * @return
+	 */
 	private String buildPanel(int num){
 		String output = "";
 		liveData.setText(output);
@@ -122,6 +137,11 @@ public class View extends JFrame{
 		return output;
 	}
 
+	/**
+	 * the getWeatherData method searches www.geonames.org for the weather data of the airports of the capital of the selected state.  
+	 * @param num
+	 * @return
+	 */
 	private String getWeatherData(int num){
 		String output = stateCapitals[num] + " Airport Weather Data" + "\n\n";
 
@@ -155,6 +175,11 @@ public class View extends JFrame{
 		return output;
 	}
 
+	/**
+	 * the getEarthquakeData for the continental united states when United States is selected by the user
+	 * @param num
+	 * @return
+	 */
 	private String getEarthquakeData(int num){
 		String output = "5 Worst Earthquakes for " + states[num] + "\n\n";
 		try{
@@ -176,6 +201,12 @@ public class View extends JFrame{
 		return output;
 	}
 
+	/**
+	 * the readURL method converts an inputed string to a url and opens a stream.
+	 * @param webservice
+	 * @return
+	 * @throws Exception
+	 */
 	private static String readURL(String webservice) throws Exception {
 		URL oracle = new URL(webservice);
 		BufferedReader in = new BufferedReader(
@@ -192,11 +223,14 @@ public class View extends JFrame{
 		return result;
 	}
 
+	/**
+	 * displayListener represents a private inner class for the displayButton
+	 */
 	private class displayListener implements ActionListener{
+		/**
+		 * the actionPerformed method runs the included code when the displayButton is pressed
+		 */
 		public void actionPerformed(ActionEvent arg0) {
-			//System.out.println(statesDropDown.getSelectedIndex() + " " + statesDropDown.getSelectedItem());
-			//buildPanel(statesDropDown.getSelectedIndex());
-
 			liveData.setText(buildPanel(statesDropDown.getSelectedIndex()));
 		}
 	}
